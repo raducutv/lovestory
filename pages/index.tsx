@@ -1,6 +1,11 @@
 // pages/subscribe.tsx
 import React from "react";
-import type { InferGetStaticPropsType, GetStaticProps } from "next";
+import type {
+  InferGetStaticPropsType,
+  GetStaticProps,
+  InferGetServerSidePropsType,
+  GetServerSideProps,
+} from "next";
 import { Quotes } from "@/models/Quotes";
 import Link from "next/link";
 
@@ -10,17 +15,17 @@ type Quote = {
   createdAt: string;
 };
 
-export const getStaticProps = (async (context) => {
-  const res = await fetch("http://localhost:3000/api/subscribe");
+export const getServerSideProps = (async (context) => {
+  const res = await fetch("/api/subscribe");
   const quotes = await res.json();
   return { props: { quotes } };
-}) satisfies GetStaticProps<{
+}) satisfies GetServerSideProps<{
   quotes: Quote;
 }>;
 
 export default function Page({
   quotes,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <div className="text-center">
       <p className="text-xl text-center mt-8 ">
