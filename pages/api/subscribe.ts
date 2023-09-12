@@ -39,3 +39,7 @@ export default async function handler(
   //do something with the email
   console.log(`${name}: ${text}`);
 }
+
+export function json() {
+  throw new Error("Function not implemented.");
+}

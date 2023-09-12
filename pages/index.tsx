@@ -8,6 +8,7 @@ import type {
 } from "next";
 import { Quotes } from "@/models/Quotes";
 import Link from "next/link";
+import axios from "axios";
 
 type Quote = {
   name: string;
@@ -15,17 +16,20 @@ type Quote = {
   createdAt: string;
 };
 
-export const getServerSideProps = (async (context) => {
-  const res = await fetch("/api/subscribe");
-  const quotes = await res.json();
+export const getStaticProps = (async (context) => {
+  const apiURL = process.env.API_URL;
+  const resp = await fetch(`${apiURL}/api/subscribe`);
+
+  const quotes = await resp.json();
+
   return { props: { quotes } };
-}) satisfies GetServerSideProps<{
+}) satisfies GetStaticProps<{
   quotes: Quote;
 }>;
 
 export default function Page({
   quotes,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className="text-center">
       <p className="text-xl text-center mt-8 ">
